@@ -15,6 +15,7 @@ public class EmployeeApp {
     private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
     private static final MainMenu mainMenu = new MainMenu();
+    private static final EmployeeRepository employeeRepository = new EmployeeRepository();
 
     public static void main(String[] args) throws Exception {
 
@@ -22,25 +23,24 @@ public class EmployeeApp {
 
         MainMenu.MainMenuOption menuChoice;
         do {
-
             menuChoice = mainMenu.capture();
 
             switch (menuChoice) {
                 case LIST_EMPLOYEES:
-                    Employee.listAllEmployees()
+                    employeeRepository.listAllEmployees()
                             .forEach(StandardOutput::displayEmployeeDetails);
                     break;
 
                 case ADD_NEW_EMPLOYEE:
                     NewEmployeeDTO newEmployeeDTO = captureNewEmployee();
                     if (NewEmployeeValidator.validate(newEmployeeDTO))
-                        Employee.createNew(newEmployeeDTO.getFirstName(), newEmployeeDTO.getLastName(), newEmployeeDTO.isManager());
+                        employeeRepository.add(new Employee(newEmployeeDTO.getFirstName(), newEmployeeDTO.getLastName(), newEmployeeDTO.isManager()));
                     break;
 
                 case CALCULATE_SALARY:
                     askUserName();
                     String userName = input.readLine();
-                    Employee employee = Employee.findByUserName(userName);
+                    Employee employee = employeeRepository.findByUserName(userName);
 
                     if (employee == null) {
                         couldNotFindUserName(userName);

@@ -1,16 +1,18 @@
 package be.eekhaut.kristof.solid.srp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Employee {
 
-    private String userName;
+    private final String userName;
     private String firstName;
     private String lastName;
     private boolean isManager;
 
-    private static final List<Employee> allEmployees = new ArrayList<>();       // We just store the data in memory for the example  (imagine this was done with SQL queries)
+    public Employee(String firstName, String lastName, boolean isManager) {
+        this.userName = (firstName.charAt(0) + lastName).toLowerCase();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isManager = isManager;
+    }
 
     public String getUserName() {
         return userName;
@@ -26,27 +28,6 @@ public class Employee {
 
     public boolean isManager() {
         return isManager;
-    }
-
-    public static List<Employee> listAllEmployees() {
-        return allEmployees;
-    }
-
-    public static Employee findByUserName(String userName) {
-        return allEmployees.stream()
-                .filter(employee -> employee.userName.equals(userName))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public static void createNew(String firstName, String lastName, boolean isManager) {
-        Employee employee = new Employee();
-        employee.userName = (firstName.charAt(0) + lastName).toLowerCase();
-        employee.firstName = firstName;
-        employee.lastName = lastName;
-        employee.isManager = isManager;
-
-        allEmployees.add(employee);
     }
 
     public int calculateSalary() {
