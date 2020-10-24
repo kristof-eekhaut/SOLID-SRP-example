@@ -52,11 +52,4 @@ public class Employee {
     public int calculateSalary() {
         return isManager ? 30000 : 1000;
     }
-
-    public void printDetails() {
-        System.out.println("Employee ID:   " + userName);
-        System.out.println("  First name:  " + firstName);
-        System.out.println("  Last name:   " + lastName);
-        System.out.println("  Is manager:  " + isManager);
-    }
 }
