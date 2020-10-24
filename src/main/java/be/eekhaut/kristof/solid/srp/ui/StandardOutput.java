@@ -15,7 +15,7 @@ public class StandardOutput {
     }
 
     public static void printError(String message) {
-        System.out.println(message);
+        System.err.println(message);
     }
 
     public static void printValidationError(String field) {

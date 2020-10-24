@@ -33,18 +33,8 @@ public class EmployeeApp {
 
                 case ADD_NEW_EMPLOYEE:
                     NewEmployeeDTO newEmployeeDTO = captureNewEmployee();
-
-                    if (newEmployeeDTO.getFirstName() == null || newEmployeeDTO.getFirstName().isEmpty()) {
-                        printValidationError("first name");
-                        break;
-                    }
-
-                    if (newEmployeeDTO.getLastName() == null || newEmployeeDTO.getLastName().isEmpty()) {
-                        printValidationError("last name");
-                        break;
-                    }
-
-                    Employee.createNew(newEmployeeDTO.getFirstName(), newEmployeeDTO.getLastName(), newEmployeeDTO.isManager());
+                    if (NewEmployeeValidator.validate(newEmployeeDTO))
+                        Employee.createNew(newEmployeeDTO.getFirstName(), newEmployeeDTO.getLastName(), newEmployeeDTO.isManager());
                     break;
 
                 case CALCULATE_SALARY:
