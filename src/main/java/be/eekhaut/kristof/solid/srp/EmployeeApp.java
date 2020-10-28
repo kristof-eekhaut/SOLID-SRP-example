@@ -1,22 +1,20 @@
 package be.eekhaut.kristof.solid.srp;
 
 import be.eekhaut.kristof.solid.srp.ui.MainMenu;
-import be.eekhaut.kristof.solid.srp.ui.NewEmployeeDTO;
-import be.eekhaut.kristof.solid.srp.ui.StandardOutput;
+import be.eekhaut.kristof.solid.srp.usecase.CalculateSalaryUseCase;
+import be.eekhaut.kristof.solid.srp.usecase.CreateEmployeeUseCase;
+import be.eekhaut.kristof.solid.srp.usecase.ListEmployeesUseCase;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import static be.eekhaut.kristof.solid.srp.ui.NewEmployeeForm.captureNewEmployee;
-import static be.eekhaut.kristof.solid.srp.ui.StandardOutput.*;
+import static be.eekhaut.kristof.solid.srp.ui.StandardOutput.greetUser;
 
 public class EmployeeApp {
 
-    private static final BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-
     private static final MainMenu mainMenu = new MainMenu();
     private static final EmployeeRepository employeeRepository = new EmployeeRepository();
-    private static final SalaryCalculator salaryCalculator = new SalaryCalculator();
+
+    private static final ListEmployeesUseCase listEmployeesUseCase = new ListEmployeesUseCase(employeeRepository);
+    private static final CreateEmployeeUseCase createEmployeeUseCase = new CreateEmployeeUseCase(employeeRepository);
+    private static final CalculateSalaryUseCase calculateSalaryUseCase = new CalculateSalaryUseCase(employeeRepository);
 
     public static void main(String[] args) throws Exception {
 
@@ -28,27 +26,15 @@ public class EmployeeApp {
 
             switch (menuChoice) {
                 case LIST_EMPLOYEES:
-                    employeeRepository.listAllEmployees()
-                            .forEach(StandardOutput::displayEmployeeDetails);
+                    listEmployeesUseCase.execute();
                     break;
 
                 case ADD_NEW_EMPLOYEE:
-                    NewEmployeeDTO newEmployeeDTO = captureNewEmployee();
-                    if (NewEmployeeValidator.validate(newEmployeeDTO))
-                        employeeRepository.add(new Employee(newEmployeeDTO.getFirstName(), newEmployeeDTO.getLastName(), newEmployeeDTO.isManager()));
+                    createEmployeeUseCase.execute();
                     break;
 
                 case CALCULATE_SALARY:
-                    askUserName();
-                    String userName = input.readLine();
-                    Employee employee = employeeRepository.findByUserName(userName);
-
-                    if (employee == null) {
-                        couldNotFindUserName(userName);
-                        break;
-                    }
-
-                    displaySalary(salaryCalculator.calculateSalary(employee));
+                    calculateSalaryUseCase.execute();
                     break;
 
                 default:
