@@ -29,8 +29,4 @@ public class Employee {
     public boolean isManager() {
         return isManager;
     }
-
-    public int calculateSalary() {
-        return isManager ? 30000 : 1000;
-    }
 }

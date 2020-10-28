@@ -16,6 +16,7 @@ public class EmployeeApp {
 
     private static final MainMenu mainMenu = new MainMenu();
     private static final EmployeeRepository employeeRepository = new EmployeeRepository();
+    private static final SalaryCalculator salaryCalculator = new SalaryCalculator();
 
     public static void main(String[] args) throws Exception {
 
@@ -47,7 +48,7 @@ public class EmployeeApp {
                         break;
                     }
 
-                    displaySalary(employee.calculateSalary());
+                    displaySalary(salaryCalculator.calculateSalary(employee));
                     break;
 
                 default:
